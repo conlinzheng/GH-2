@@ -349,7 +349,7 @@
             <div class="main-image-container mb-4">
               <img 
                 id="modal-main-image" 
-                :src="selectedProduct?.images[0] || ''" 
+                :src="selectedProduct?.images[0] ? encodeURI(selectedProduct.images[0]) : ''" 
                 :alt="selectedProduct?.name || ''" 
                 class="w-full h-64 object-cover rounded-md cursor-pointer"
                 @click="openLightbox(selectedProduct?.images[0])"
@@ -371,7 +371,7 @@
                   class="modal-gallery-item flex-shrink-0 w-20 h-20"
                 >
                   <img 
-                    :src="image" 
+                    :src="encodeURI(image)" 
                     :alt="index + 1" 
                     class="gallery-thumb w-full h-full object-cover rounded-md cursor-pointer hover:opacity-80 transition-opacity"
                     @click="changeMainImage(image)"
@@ -461,7 +461,7 @@
         <img 
           class="lightbox-image" 
           id="lightbox-image" 
-          :src="currentLightboxImage" 
+          :src="encodeURI(currentLightboxImage)" 
           alt=""
         >
         <button 
@@ -510,7 +510,7 @@
               class="history-item flex gap-3 p-3 border rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
               @click="viewHistoryProduct(item.id)"
             >
-              <img :src="item.images[0]" :alt="item.name" class="w-16 h-16 object-cover rounded">
+              <img :src="encodeURI(item.images[0])" :alt="item.name" class="w-16 h-16 object-cover rounded">
               <div class="flex-grow">
                 <h4 class="font-medium text-sm line-clamp-2">{{ item.name }}</h4>
                 <p class="text-xs text-gray-500 mt-1">{{ item.seriesId }}</p>
