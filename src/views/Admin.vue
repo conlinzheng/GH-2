@@ -375,6 +375,8 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import productsData from '../data/products.js'
+import seriesData from '../data/series.js'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -445,85 +447,18 @@ const loadProductsData = async () => {
     // 模拟数据加载
     await new Promise(resolve => setTimeout(resolve, 1000))
     
-    // 模拟产品数据
-    const mockProducts = [
-      {
-        id: 'product1',
-        seriesId: '1-PU系列',
-        name: 'PU系列产品1',
-        description: '这是一款优质的PU系列产品',
-        price: '¥199',
-        upperMaterial: 'PU',
-        innerMaterial: '织物',
-        soleMaterial: '橡胶',
-        customizable: 'true',
-        minOrder: '100',
-        tags: ['新品', '热销'],
-        images: [
-          'https://via.placeholder.com/300x400',
-          'https://via.placeholder.com/300x400?text=Image+2'
-        ]
-      },
-      {
-        id: 'product2',
-        seriesId: '2-真皮系列',
-        name: '真皮系列产品1',
-        description: '这是一款优质的真皮系列产品',
-        price: '¥399',
-        upperMaterial: '真皮',
-        innerMaterial: '真皮',
-        soleMaterial: '真皮',
-        customizable: 'true',
-        minOrder: '50',
-        tags: ['高端', '真皮'],
-        images: [
-          'https://via.placeholder.com/300x400?text=Leather+1',
-          'https://via.placeholder.com/300x400?text=Leather+2'
-        ]
-      },
-      {
-        id: 'product3',
-        seriesId: '3-短靴系列',
-        name: '短靴系列产品1',
-        description: '这是一款优质的短靴系列产品',
-        price: '¥299',
-        upperMaterial: 'PU',
-        innerMaterial: '绒毛',
-        soleMaterial: '橡胶',
-        customizable: 'false',
-        minOrder: '200',
-        tags: ['冬季', '保暖'],
-        images: [
-          'https://via.placeholder.com/300x400?text=Boots+1',
-          'https://via.placeholder.com/300x400?text=Boots+2'
-        ]
-      }
-    ]
+    // 使用生成的数据
+    products.value = productsData
+    allProducts.value = productsData
     
-    products.value = mockProducts
-    allProducts.value = mockProducts
-    
-    // 模拟系列数据
-    series.value = [
-      { id: '1-PU系列', name: 'PU系列' },
-      { id: '2-真皮系列', name: '真皮系列' },
-      { id: '3-短靴系列', name: '短靴系列' },
-      { id: '4-乐福系列', name: '乐福系列' },
-      { id: '5-春季', name: '春季' },
-      { id: '6-夏季', name: '夏季' },
-      { id: '7-秋季', name: '秋季' }
-    ]
+    // 使用生成的系列数据
+    series.value = seriesData
     
     // 系列名称映射
-    seriesNameMap.value = {
-      '1-PU系列': 'PU系列',
-      '2-真皮系列': '真皮系列',
-      '3-短靴系列': '短靴系列',
-      '4-乐福系列': '乐福系列',
-      '5-春季': '春季',
-      '6-夏季': '夏季',
-      '7-秋季': '秋季'
-    }
+    seriesNameMap.value = {}
+    series.value.forEach(s => {
+      seriesNameMap.value[s.id] = s.name
+    })
     
   } catch (error) {
     console.error('Load products data error:', error)

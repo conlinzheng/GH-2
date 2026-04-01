@@ -1,0 +1,210 @@
+{
+  "products": [
+    {
+      "id": "product1",
+      "seriesId": "1-PU系列",
+      "name": "PU系列产品1",
+      "description": "这是一款优质的PU系列产品",
+      "price": "¥100",
+      "upperMaterial": "PU",
+      "innerMaterial": "织物",
+      "soleMaterial": "橡胶",
+      "customizable": "true",
+      "minOrder": "100",
+      "tags": [
+        "新品",
+        "热销"
+      ],
+      "images": [
+        "/images/产品图/1-PU系列/中文 (1).png",
+        "/images/产品图/1-PU系列/中文 (2).png",
+        "/images/产品图/1-PU系列/中文 (3).png",
+        "/images/产品图/1-PU系列/中文 (4).png",
+        "/images/产品图/1-PU系列/中文 (5).png",
+        "/images/产品图/1-PU系列/产品1 (1).jpg",
+        "/images/产品图/1-PU系列/产品1 (2).jpg"
+      ]
+    },
+    {
+      "id": "product2",
+      "seriesId": "2-真皮系列",
+      "name": "真皮系列产品2",
+      "description": "这是一款优质的真皮系列产品",
+      "price": "¥200",
+      "upperMaterial": "真皮",
+      "innerMaterial": "真皮",
+      "soleMaterial": "橡胶",
+      "customizable": "true",
+      "minOrder": "100",
+      "tags": [
+        "新品",
+        "热销"
+      ],
+      "images": [
+        "/images/产品图/2-真皮系列/33 (1).png",
+        "/images/产品图/2-真皮系列/33 (2).png",
+        "/images/产品图/2-真皮系列/中文数字123 (1).png",
+        "/images/产品图/2-真皮系列/中文数字123 (2).png",
+        "/images/产品图/2-真皮系列/中文数字123 (3).png",
+        "/images/产品图/2-真皮系列/中文数字123 (4).png",
+        "/images/产品图/2-真皮系列/中文数字123 (5).png",
+        "/images/产品图/2-真皮系列/勃肯1 (1).jpg"
+      ]
+    },
+    {
+      "id": "product3",
+      "seriesId": "3-短靴系列",
+      "name": "短靴系列产品3",
+      "description": "这是一款优质的短靴系列产品",
+      "price": "¥300",
+      "upperMaterial": "PU",
+      "innerMaterial": "织物",
+      "soleMaterial": "橡胶",
+      "customizable": "true",
+      "minOrder": "100",
+      "tags": [
+        "新品",
+        "热销"
+      ],
+      "images": [
+        "/images/产品图/3-短靴系列/00A (1).jpg",
+        "/images/产品图/3-短靴系列/中文+ (1).png",
+        "/images/产品图/3-短靴系列/中文+ (2).png",
+        "/images/产品图/3-短靴系列/中文+ (3).png",
+        "/images/产品图/3-短靴系列/中文+ (4).png",
+        "/images/产品图/3-短靴系列/中文+ (5).png"
+      ]
+    },
+    {
+      "id": "product4",
+      "seriesId": "4-乐福系列",
+      "name": "乐福系列产品4",
+      "description": "这是一款优质的乐福系列产品",
+      "price": "¥400",
+      "upperMaterial": "PU",
+      "innerMaterial": "织物",
+      "soleMaterial": "橡胶",
+      "customizable": "true",
+      "minOrder": "100",
+      "tags": [
+        "新品",
+        "热销"
+      ],
+      "images": [
+        "/images/产品图/4-乐福系列/B5 (1).jpg",
+        "/images/产品图/4-乐福系列/中文-ABC (1).png",
+        "/images/产品图/4-乐福系列/中文-ABC (2).png",
+        "/images/产品图/4-乐福系列/中文-ABC (3).png",
+        "/images/产品图/4-乐福系列/中文-ABC (4).png",
+        "/images/产品图/4-乐福系列/中文-ABC (5).png"
+      ]
+    },
+    {
+      "id": "product5",
+      "seriesId": "5-春季",
+      "name": "春季产品5",
+      "description": "这是一款优质的春季产品",
+      "price": "¥500",
+      "upperMaterial": "PU",
+      "innerMaterial": "织物",
+      "soleMaterial": "橡胶",
+      "customizable": "true",
+      "minOrder": "100",
+      "tags": [
+        "新品",
+        "热销"
+      ],
+      "images": [
+        "/images/产品图/5-春季/99 (1).png",
+        "/images/产品图/5-春季/99 (2).png",
+        "/images/产品图/5-春季/新款1 (1).jpg",
+        "/images/产品图/5-春季/新款1 (2).jpg"
+      ]
+    },
+    {
+      "id": "product6",
+      "seriesId": "6-夏季",
+      "name": "夏季产品6",
+      "description": "这是一款优质的夏季产品",
+      "price": "¥600",
+      "upperMaterial": "PU",
+      "innerMaterial": "织物",
+      "soleMaterial": "橡胶",
+      "customizable": "true",
+      "minOrder": "100",
+      "tags": [
+        "新品",
+        "热销"
+      ],
+      "images": [
+        "/images/产品图/6-夏季/41.png",
+        "/images/产品图/6-夏季/42.png",
+        "/images/产品图/6-夏季/43.png",
+        "/images/产品图/6-夏季/44.png",
+        "/images/产品图/6-夏季/45.png"
+      ]
+    },
+    {
+      "id": "product7",
+      "seriesId": "7-秋季",
+      "name": "秋季产品7",
+      "description": "这是一款优质的秋季产品",
+      "price": "¥700",
+      "upperMaterial": "PU",
+      "innerMaterial": "织物",
+      "soleMaterial": "橡胶",
+      "customizable": "true",
+      "minOrder": "100",
+      "tags": [
+        "新品",
+        "热销"
+      ],
+      "images": [
+        "/images/产品图/7-秋季/@@@ (1).png",
+        "/images/产品图/7-秋季/@@@ (2).png",
+        "/images/产品图/7-秋季/@@@ (3).png",
+        "/images/产品图/7-秋季/@@@ (4).png",
+        "/images/产品图/7-秋季/@@@ (5).png"
+      ]
+    }
+  ],
+  "series": [
+    {
+      "id": "1-PU系列",
+      "name": "PU系列"
+    },
+    {
+      "id": "2-真皮系列",
+      "name": "真皮系列"
+    },
+    {
+      "id": "3-短靴系列",
+      "name": "短靴系列"
+    },
+    {
+      "id": "4-乐福系列",
+      "name": "乐福系列"
+    },
+    {
+      "id": "5-春季",
+      "name": "春季"
+    },
+    {
+      "id": "6-夏季",
+      "name": "夏季"
+    },
+    {
+      "id": "7-秋季",
+      "name": "秋季"
+    }
+  ],
+  "seriesNameMap": {
+    "1-PU系列": "PU系列",
+    "2-真皮系列": "真皮系列",
+    "3-短靴系列": "短靴系列",
+    "4-乐福系列": "乐福系列",
+    "5-春季": "春季",
+    "6-夏季": "夏季",
+    "7-秋季": "秋季"
+  }
+}
