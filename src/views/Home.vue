@@ -156,7 +156,7 @@
                             class="carousel-item absolute inset-0 transition-opacity duration-500" 
                             :class="{ 'opacity-100': currentSlide[product.id] === index, 'opacity-0': currentSlide[product.id] !== index }"
                           >
-                            <img :src="image" :alt="product.name" class="w-full h-full object-cover">
+                            <img :src="encodeURI(image)" :alt="product.name" class="w-full h-full object-cover">
                           </div>
                           <div class="carousel-controls absolute bottom-2 left-0 right-0 flex justify-center gap-1">
                             <button 
@@ -169,7 +169,7 @@
                           </div>
                         </div>
                         <div v-else class="product-image h-48">
-                          <img :src="product.images[0]" :alt="product.name" class="w-full h-full object-cover">
+                          <img :src="encodeURI(product.images[0])" :alt="product.name" class="w-full h-full object-cover">
                         </div>
                       </div>
                       <div class="product-info p-4">
