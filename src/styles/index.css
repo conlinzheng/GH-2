@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+  }
+
+  a {
+    @apply text-primary hover:underline;
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn {
+    @apply px-4 py-2 rounded-md transition-colors;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-blue-600;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-white hover:bg-gray-600;
+  }
+
+  .product-card {
+    @apply bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow;
+  }
+
+  .series-section {
+    @apply mb-12;
+  }
+
+  .series-title {
+    @apply text-2xl mb-6 pb-2 border-b border-gray-200;
+  }
+
+  .series-products {
+    @apply flex gap-4 overflow-x-auto pb-4;
+  }
+
+  .series-products::-webkit-scrollbar {
+    @apply h-2;
+  }
+
+  .series-products::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded-full;
+  }
+
+  .series-products::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full hover:bg-gray-400;
+  }
+
+  .series-nav-btn {
+    @apply absolute top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:bg-white transition-colors;
+  }
+
+  .series-nav-btn.left {
+    @apply left-0;
+  }
+
+  .series-nav-btn.right {
+    @apply right-0;
+  }
+
+  .carousel {
+    @apply relative overflow-hidden;
+  }
+
+  .carousel-track {
+    @apply flex transition-transform duration-500;
+  }
+
+  .carousel-slide {
+    @apply flex-shrink-0 w-full;
+  }
+
+  .modal {
+    @apply fixed inset-0 z-50 flex items-center justify-center p-4;
+  }
+
+  .modal-overlay {
+    @apply absolute inset-0 bg-black/50 backdrop-blur-sm;
+  }
+
+  .modal-content {
+    @apply relative bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto;
+  }
+
+  .lightbox {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-black/90;
+  }
+
+  .lightbox-content {
+    @apply relative max-w-6xl w-full max-h-[90vh];
+  }
+
+  .lightbox-image {
+    @apply w-full h-auto max-h-[80vh] object-contain;
+  }
+
+  .lightbox-nav {
+    @apply absolute top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/40 transition-colors;
+  }
+
+  .lightbox-prev {
+    @apply left-4;
+  }
+
+  .lightbox-next {
+    @apply right-4;
+  }
+
+  .history-sidebar {
+    @apply fixed top-0 right-0 w-80 h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-40;
+  }
+
+  .history-sidebar.active {
+    @apply translate-x-0;
+  }
+
+  .history-overlay {
+    @apply fixed inset-0 bg-black/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 z-30;
+  }
+
+  .history-overlay.active {
+    @apply opacity-100 pointer-events-auto;
+  }
+
+  .search-container {
+    @apply relative max-w-2xl mx-auto mb-8;
+  }
+
+  .search-input {
+    @apply w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+  }
+
+  .search-btn {
+    @apply absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-gray-500 hover:text-primary;
+  }
+
+  .search-clear-btn {
+    @apply absolute right-10 top-1/2 transform -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600;
+  }
+
+  .contact-modal {
+    @apply fixed inset-0 z-50 flex items-center justify-center p-4;
+  }
+
+  .contact-modal-overlay {
+    @apply absolute inset-0 bg-black/50 backdrop-blur-sm;
+  }
+
+  .contact-modal-content {
+    @apply relative bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto;
+  }
+
+  .footer {
+    @apply bg-gray-800 text-white py-12;
+  }
+
+  .footer-content {
+    @apply container flex flex-col items-center justify-center gap-4;
+  }
+
+  .social-links {
+    @apply flex gap-4;
+  }
+
+  .social-link {
+    @apply w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center hover:bg-primary transition-colors;
+  }
+
+  .nav-btn {
+    @apply p-2 rounded-full hover:bg-gray-100 transition-colors;
+  }
+
+  .lang-text {
+    @apply text-sm font-medium;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+
+  .backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+  }
+
+  .backdrop-blur-md {
+    backdrop-filter: blur(8px);
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
