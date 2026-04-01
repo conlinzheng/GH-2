@@ -22,116 +22,256 @@
       </div>
     </header>
 
-    <!-- 主要内容 -->
+    <!-- 主要内容 - 3栏布局 -->
     <main class="main flex-grow">
-      <div class="container py-8">
-        <!-- 管理面板标题 -->
-        <div class="flex justify-between items-center mb-8">
-          <h2 class="text-2xl font-bold">后台管理</h2>
-          <button 
-            class="btn btn-primary" 
-            @click="openAddProductModal"
-          >
-            添加产品
-          </button>
-        </div>
-
-        <!-- 产品管理 -->
-        <section class="products-management mb-12">
-          <h3 class="text-xl font-semibold mb-4">产品管理</h3>
-          
-          <!-- 搜索和筛选 -->
-          <div class="flex flex-wrap gap-4 mb-6">
-            <div class="search-input-wrapper relative flex-grow">
-              <input 
-                type="text" 
-                class="search-input w-full" 
-                placeholder="搜索产品名称..."
-                v-model="adminSearchQuery"
-                @input="searchAdminProducts"
-              >
+      <div class="container-fluid h-full p-0">
+        <div class="flex h-full">
+          <!-- 左栏：系列管理 -->
+          <div class="w-1/4 border-r border-gray-200 bg-white">
+            <div class="p-4 border-b border-gray-200">
+              <h3 class="text-lg font-semibold">系列管理</h3>
             </div>
-            <select 
-              class="form-select px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              v-model="adminSelectedSeries"
-              @change="filterAdminProducts"
-            >
-              <option value="">全部系列</option>
-              <option v-for="series in series" :key="series.id" :value="series.id">
-                {{ series.name }}
-              </option>
-            </select>
-          </div>
-
-          <!-- 产品列表 -->
-          <div v-if="isLoading" class="loading flex flex-col items-center justify-center py-20">
-            <div class="spinner w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-            <p class="mt-4">加载中...</p>
-          </div>
-          <div v-else-if="adminProducts.length === 0" class="text-center py-20">
-            <p>暂无产品数据</p>
-          </div>
-          <div v-else class="overflow-x-auto">
-            <table class="w-full border-collapse">
-              <thead>
-                <tr class="bg-gray-100">
-                  <th class="px-4 py-3 border border-gray-300 text-left">ID</th>
-                  <th class="px-4 py-3 border border-gray-300 text-left">名称</th>
-                  <th class="px-4 py-3 border border-gray-300 text-left">系列</th>
-                  <th class="px-4 py-3 border border-gray-300 text-left">价格</th>
-                  <th class="px-4 py-3 border border-gray-300 text-left">操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="product in adminProducts" :key="product.id" class="hover:bg-gray-50">
-                  <td class="px-4 py-3 border border-gray-300">{{ product.id }}</td>
-                  <td class="px-4 py-3 border border-gray-300">{{ product.name }}</td>
-                  <td class="px-4 py-3 border border-gray-300">{{ seriesNameMap[product.seriesId] || product.seriesId }}</td>
-                  <td class="px-4 py-3 border border-gray-300">{{ product.price }}</td>
-                  <td class="px-4 py-3 border border-gray-300">
+            <div class="p-4">
+              <div class="mb-4">
+                <button 
+                  class="btn btn-secondary w-full"
+                  @click="openAddSeriesModal"
+                >
+                  添加系列
+                </button>
+              </div>
+              <div class="space-y-2">
+                <div 
+                  v-for="(seriesItem, index) in series" 
+                  :key="seriesItem.id"
+                  class="series-item p-3 border rounded-md hover:bg-gray-50 cursor-pointer"
+                  :class="{ 'bg-primary/10 border-primary': selectedSeriesId === seriesItem.id }"
+                  @click="selectSeries(seriesItem.id)"
+                >
+                  <div class="flex justify-between items-center">
+                    <div>
+                      <h4 class="font-medium">{{ seriesItem.name }}</h4>
+                      <p class="text-sm text-gray-500">{{ getSeriesProductCount(seriesItem.id) }} 个产品</p>
+                      <p class="text-xs text-gray-400">{{ seriesItem.id }}</p>
+                    </div>
                     <div class="flex gap-2">
                       <button 
-                        class="btn btn-secondary" 
-                        @click="editProduct(product)"
+                        class="text-sm text-gray-500 hover:text-primary"
+                        @click.stop="moveSeries(index, -1)"
+                        :disabled="index === 0"
+                      >
+                        ↑
+                      </button>
+                      <button 
+                        class="text-sm text-gray-500 hover:text-primary"
+                        @click.stop="moveSeries(index, 1)"
+                        :disabled="index === series.length - 1"
+                      >
+                        ↓
+                      </button>
+                      <button 
+                        class="text-sm text-gray-500 hover:text-primary"
+                        @click.stop="editSeries(seriesItem)"
                       >
                         编辑
                       </button>
                       <button 
-                        class="btn btn-danger" 
-                        @click="deleteProduct(product.id)"
+                        class="text-sm text-gray-500 hover:text-red-500"
+                        @click.stop="deleteSeries(seriesItem.id)"
                       >
                         删除
                       </button>
                     </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </section>
 
-        <!-- 系列管理 -->
-        <section class="series-management">
-          <h3 class="text-xl font-semibold mb-4">系列管理</h3>
-          
-          <div class="flex justify-between items-center mb-6">
-            <div class="flex flex-wrap gap-2">
+          <!-- 中间栏：产品管理 -->
+          <div class="w-1/2 border-r border-gray-200 bg-white">
+            <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+              <h3 class="text-lg font-semibold">产品管理</h3>
               <button 
-                v-for="series in series" 
-                :key="series.id"
-                class="series-tag px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
+                class="btn btn-primary"
+                @click="openAddProductModal"
               >
-                {{ series.name }}
+                添加产品
               </button>
             </div>
-            <button 
-              class="btn btn-secondary" 
-              @click="openAddSeriesModal"
-            >
-              添加系列
-            </button>
+            <div class="p-4">
+              <div class="mb-4">
+                <input 
+                  type="text" 
+                  class="form-input w-full"
+                  placeholder="搜索产品名称..."
+                  v-model="adminSearchQuery"
+                  @input="searchAdminProducts"
+                >
+              </div>
+              <div v-if="isLoading" class="loading flex flex-col items-center justify-center py-10">
+                <div class="spinner w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <p class="mt-2">加载中...</p>
+              </div>
+              <div v-else-if="filteredProducts.length === 0" class="text-center py-10">
+                <p>暂无产品数据</p>
+              </div>
+              <div v-else class="space-y-2">
+                <div 
+                  v-for="(product, index) in filteredProducts" 
+                  :key="product.id"
+                  class="product-item p-3 border rounded-md hover:bg-gray-50 cursor-pointer"
+                  :class="{ 'bg-primary/10 border-primary': selectedProductId === product.id }"
+                  @click="selectProduct(product)"
+                >
+                  <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-gray-100 rounded overflow-hidden">
+                      <img 
+                        v-if="product.images && product.images.length > 0" 
+                        :src="product.images[0]" 
+                        :alt="product.name"
+                        class="w-full h-full object-cover"
+                      >
+                    </div>
+                    <div class="flex-grow">
+                      <h4 class="font-medium">{{ product.name }}</h4>
+                      <p class="text-sm text-gray-500">{{ product.price }}</p>
+                    </div>
+                    <div class="flex gap-2">
+                      <button 
+                        class="text-sm text-gray-500 hover:text-primary"
+                        @click.stop="moveProduct(index, -1)"
+                        :disabled="index === 0"
+                      >
+                        ↑
+                      </button>
+                      <button 
+                        class="text-sm text-gray-500 hover:text-primary"
+                        @click.stop="moveProduct(index, 1)"
+                        :disabled="index === filteredProducts.length - 1"
+                      >
+                        ↓
+                      </button>
+                      <button 
+                        class="text-sm text-gray-500 hover:text-primary"
+                        @click.stop="editProduct(product)"
+                      >
+                        编辑
+                      </button>
+                      <button 
+                        class="text-sm text-gray-500 hover:text-red-500"
+                        @click.stop="deleteProduct(product.id)"
+                      >
+                        删除
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </section>
+
+          <!-- 右边栏：产品详情编辑 -->
+          <div class="w-1/4 bg-white">
+            <div class="p-4 border-b border-gray-200">
+              <h3 class="text-lg font-semibold">产品详情</h3>
+            </div>
+            <div class="p-4">
+              <div v-if="!selectedProduct" class="text-center py-10">
+                <p>请选择一个产品</p>
+              </div>
+              <div v-else>
+                <div class="mb-4">
+                  <label class="form-label">产品名称</label>
+                  <input 
+                    type="text" 
+                    class="form-input w-full"
+                    v-model="selectedProduct.name"
+                    @input="updateProduct"
+                  >
+                </div>
+                <div class="mb-4">
+                  <label class="form-label">鞋面材质</label>
+                  <input 
+                    type="text" 
+                    class="form-input w-full"
+                    v-model="selectedProduct.upperMaterial"
+                    @input="updateProduct"
+                  >
+                </div>
+                <div class="mb-4">
+                  <label class="form-label">内里材质</label>
+                  <input 
+                    type="text" 
+                    class="form-input w-full"
+                    v-model="selectedProduct.innerMaterial"
+                    @input="updateProduct"
+                  >
+                </div>
+                <div class="mb-4">
+                  <label class="form-label">鞋底材质</label>
+                  <input 
+                    type="text" 
+                    class="form-input w-full"
+                    v-model="selectedProduct.soleMaterial"
+                    @input="updateProduct"
+                  >
+                </div>
+                <div class="mb-4">
+                  <label class="form-label">价格</label>
+                  <input 
+                    type="text" 
+                    class="form-input w-full"
+                    v-model="selectedProduct.price"
+                    @input="updateProduct"
+                  >
+                </div>
+                <div class="mb-4">
+                  <label class="form-label">是否支持定制</label>
+                  <div class="flex gap-4">
+                    <label class="flex items-center gap-2">
+                      <input 
+                        type="radio" 
+                        name="customizable" 
+                        value="true"
+                        v-model="selectedProduct.customizable"
+                        @change="updateProduct"
+                      >
+                      是
+                    </label>
+                    <label class="flex items-center gap-2">
+                      <input 
+                        type="radio" 
+                        name="customizable" 
+                        value="false"
+                        v-model="selectedProduct.customizable"
+                        @change="updateProduct"
+                      >
+                      否
+                    </label>
+                  </div>
+                </div>
+                <div class="mb-4">
+                  <label class="form-label">起订量</label>
+                  <input 
+                    type="text" 
+                    class="form-input w-full"
+                    v-model="selectedProduct.minOrder"
+                    @input="updateProduct"
+                  >
+                </div>
+                <div class="mt-6">
+                  <button 
+                    class="btn btn-primary w-full"
+                    @click="saveProductDetails"
+                  >
+                    保存
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
 
@@ -393,6 +533,10 @@ const productModalOpen = ref(false)
 const seriesModalOpen = ref(false)
 const isEditing = ref(false)
 const isSaving = ref(false)
+const selectedSeriesId = ref('')
+const selectedProductId = ref('')
+const selectedProduct = ref(null)
+const editingSeries = ref(null)
 
 // 表单数据
 const formData = ref({
@@ -426,6 +570,26 @@ const adminProducts = computed(() => {
   // 按系列筛选
   if (adminSelectedSeries.value) {
     filtered = filtered.filter(p => p.seriesId === adminSelectedSeries.value)
+  }
+  
+  // 按搜索词筛选
+  if (adminSearchQuery.value) {
+    const query = adminSearchQuery.value.toLowerCase().trim()
+    filtered = filtered.filter(p => 
+      p.name.toLowerCase().includes(query)
+    )
+  }
+  
+  return filtered
+})
+
+// 过滤当前选中系列的产品
+const filteredProducts = computed(() => {
+  let filtered = [...products.value]
+  
+  // 按选中系列筛选
+  if (selectedSeriesId.value) {
+    filtered = filtered.filter(p => p.seriesId === selectedSeriesId.value)
   }
   
   // 按搜索词筛选
@@ -575,6 +739,118 @@ const searchAdminProducts = () => {
 
 const filterAdminProducts = () => {
   // 筛选逻辑已在计算属性中实现
+}
+
+// 选择系列
+const selectSeries = (seriesId) => {
+  selectedSeriesId.value = seriesId
+  selectedProductId.value = ''
+  selectedProduct.value = null
+}
+
+// 选择产品
+const selectProduct = (product) => {
+  selectedProductId.value = product.id
+  selectedProduct.value = product
+}
+
+// 获取系列产品数量
+const getSeriesProductCount = (seriesId) => {
+  return products.value.filter(p => p.seriesId === seriesId).length
+}
+
+// 编辑系列
+const editSeries = (seriesItem) => {
+  editingSeries.value = { ...seriesItem }
+  // 这里可以打开系列编辑弹窗
+  const newName = prompt('请输入新的系列名称:', seriesItem.name)
+  if (newName && newName.trim()) {
+    const index = series.value.findIndex(s => s.id === seriesItem.id)
+    if (index > -1) {
+      series.value[index].name = newName.trim()
+      seriesNameMap.value[seriesItem.id] = newName.trim()
+    }
+  }
+}
+
+// 调整系列顺序
+const moveSeries = (index, direction) => {
+  if (direction === -1 && index > 0) {
+    // 向上移动
+    const temp = series.value[index]
+    series.value[index] = series.value[index - 1]
+    series.value[index - 1] = temp
+  } else if (direction === 1 && index < series.value.length - 1) {
+    // 向下移动
+    const temp = series.value[index]
+    series.value[index] = series.value[index + 1]
+    series.value[index + 1] = temp
+  }
+}
+
+// 调整产品顺序
+const moveProduct = (index, direction) => {
+  if (!selectedSeriesId.value) return
+  
+  // 获取当前系列的产品
+  const seriesProducts = products.value.filter(p => p.seriesId === selectedSeriesId.value)
+  
+  if (direction === -1 && index > 0) {
+    // 向上移动
+    const temp = seriesProducts[index]
+    seriesProducts[index] = seriesProducts[index - 1]
+    seriesProducts[index - 1] = temp
+  } else if (direction === 1 && index < seriesProducts.length - 1) {
+    // 向下移动
+    const temp = seriesProducts[index]
+    seriesProducts[index] = seriesProducts[index + 1]
+    seriesProducts[index + 1] = temp
+  }
+  
+  // 更新产品顺序
+  let productIndex = 0
+  products.value = products.value.map(p => {
+    if (p.seriesId === selectedSeriesId.value) {
+      return seriesProducts[productIndex++]
+    }
+    return p
+  })
+  allProducts.value = [...products.value]
+}
+
+// 删除系列
+const deleteSeries = (seriesId) => {
+  if (confirm('确定要删除这个系列吗？删除后该系列的所有产品也会被删除。')) {
+    // 删除系列
+    series.value = series.value.filter(s => s.id !== seriesId)
+    // 删除该系列的所有产品
+    products.value = products.value.filter(p => p.seriesId !== seriesId)
+    allProducts.value = allProducts.value.filter(p => p.seriesId !== seriesId)
+    // 清除选择
+    if (selectedSeriesId.value === seriesId) {
+      selectedSeriesId.value = ''
+      selectedProductId.value = ''
+      selectedProduct.value = null
+    }
+  }
+}
+
+// 更新产品信息
+const updateProduct = () => {
+  // 实时更新产品信息
+  if (selectedProduct.value) {
+    const index = products.value.findIndex(p => p.id === selectedProduct.value.id)
+    if (index > -1) {
+      products.value[index] = { ...selectedProduct.value }
+      allProducts.value[index] = { ...selectedProduct.value }
+    }
+  }
+}
+
+// 保存产品详情
+const saveProductDetails = () => {
+  // 保存产品详情
+  alert('产品详情已保存')
 }
 
 // 生命周期钩子
