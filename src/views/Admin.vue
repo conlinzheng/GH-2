@@ -128,7 +128,7 @@
                     <div class="w-12 h-12 bg-gray-100 rounded overflow-hidden">
                       <img 
                         v-if="product.images && product.images.length > 0" 
-                        :src="encodeURI(product.images[0])" 
+                        :src="encodeURIComponent(product.images[0])" 
                         :alt="product.name"
                         class="w-full h-full object-cover"
                       >

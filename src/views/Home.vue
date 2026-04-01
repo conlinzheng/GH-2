@@ -156,7 +156,7 @@
                             class="carousel-item absolute inset-0 transition-opacity duration-500" 
                             :class="{ 'opacity-100': currentSlide[product.id] === index, 'opacity-0': currentSlide[product.id] !== index }"
                           >
-                            <img :src="encodeURI(image)" :alt="product.name" class="w-full h-full object-cover">
+                            <img :src="encodeURIComponent(image)" :alt="product.name" class="w-full h-full object-cover">
                           </div>
                           <div class="carousel-controls absolute bottom-2 left-0 right-0 flex justify-center gap-1">
                             <button 
@@ -169,7 +169,7 @@
                           </div>
                         </div>
                         <div v-else class="product-image h-48">
-                          <img :src="encodeURI(product.images[0])" :alt="product.name" class="w-full h-full object-cover">
+                          <img :src="encodeURIComponent(product.images[0])" :alt="product.name" class="w-full h-full object-cover">
                         </div>
                       </div>
                       <div class="product-info p-4">
@@ -349,7 +349,7 @@
             <div class="main-image-container mb-4">
               <img 
                 id="modal-main-image" 
-                :src="selectedProduct?.images[0] ? encodeURI(selectedProduct.images[0]) : ''" 
+                :src="selectedProduct?.images[0] ? encodeURIComponent(selectedProduct.images[0]) : ''" 
                 :alt="selectedProduct?.name || ''" 
                 class="w-full h-64 object-cover rounded-md cursor-pointer"
                 @click="openLightbox(selectedProduct?.images[0])"
@@ -371,7 +371,7 @@
                   class="modal-gallery-item flex-shrink-0 w-20 h-20"
                 >
                   <img 
-                    :src="encodeURI(image)" 
+                    :src="encodeURIComponent(image)" 
                     :alt="index + 1" 
                     class="gallery-thumb w-full h-full object-cover rounded-md cursor-pointer hover:opacity-80 transition-opacity"
                     @click="changeMainImage(image)"
@@ -461,7 +461,7 @@
         <img 
           class="lightbox-image" 
           id="lightbox-image" 
-          :src="encodeURI(currentLightboxImage)" 
+          :src="encodeURIComponent(currentLightboxImage)" 
           alt=""
         >
         <button 
@@ -510,7 +510,7 @@
               class="history-item flex gap-3 p-3 border rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
               @click="viewHistoryProduct(item.id)"
             >
-              <img :src="encodeURI(item.images[0])" :alt="item.name" class="w-16 h-16 object-cover rounded">
+              <img :src="encodeURIComponent(item.images[0])" :alt="item.name" class="w-16 h-16 object-cover rounded">
               <div class="flex-grow">
                 <h4 class="font-medium text-sm line-clamp-2">{{ item.name }}</h4>
                 <p class="text-xs text-gray-500 mt-1">{{ item.seriesId }}</p>
