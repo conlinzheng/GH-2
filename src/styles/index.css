@@ -97,6 +97,27 @@
     @apply relative bg-white rounded-lg shadow-xl max-w-[90vw] w-full max-h-[90vh] overflow-y-auto;
   }
 
+  @media (min-width: 768px) {
+    .modal-content {
+      max-width: 80vw;
+      max-height: 85vh;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .modal-content {
+      max-width: 70vw;
+      max-height: 80vh;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .modal-content {
+      max-width: 60vw;
+      max-height: 75vh;
+    }
+  }
+
   .lightbox {
     @apply fixed inset-0 z-50 flex items-center justify-center bg-black/90;
   }
