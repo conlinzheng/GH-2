@@ -1,102 +1,111 @@
 import fs from 'fs';
 import path from 'path';
-
-// 获取当前目录路径
 import { fileURLToPath } from 'url';
+
+// 获取当前文件的目录路径
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 扫描public文件夹
-function scanPublicFolder() {
-  const publicPath = path.join(__dirname, 'public');
-  const seriesList = [];
-  const productList = [];
-  
-  // 读取public文件夹下的所有系列文件夹
-  const seriesFolders = fs.readdirSync(publicPath, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name);
-  
-  // 处理每个系列文件夹
-  seriesFolders.forEach((seriesFolder, index) => {
-    // 提取系列名称（去除数字前缀）
-    const seriesName = seriesFolder.replace(/^\d+-/, '');
-    const seriesId = `series-${index + 1}`;
-    
-    // 添加系列信息
-    seriesList.push({
-      id: seriesId,
-      name: seriesName
-    });
-    
-    // 读取系列文件夹下的所有图片
-    const seriesPath = path.join(publicPath, seriesFolder);
-    const images = fs.readdirSync(seriesPath)
-      .filter(file => {
-        const ext = path.extname(file).toLowerCase();
-        return ['.jpg', '.jpeg', '.png', '.gif'].includes(ext);
-      });
-    
-    // 为每个图片生成产品信息
-    images.forEach((image, imgIndex) => {
-      const productId = `product-${seriesId}-${imgIndex + 1}`;
-      const imagePath = `/${seriesFolder}/${image}`;
-      
-      // 提取产品名称（去除数字和特殊字符）
-      let productName = image.replace(/\d+\s*\([^)]*\)/g, '').replace(/\.(jpg|jpeg|png|gif)$/i, '').trim();
-      if (!productName) {
-        productName = `${seriesName}产品${imgIndex + 1}`;
+// 扫描目录
+const publicDir = path.join(__dirname, 'public');
+const seriesDirs = fs.readdirSync(publicDir, { withFileTypes: true })
+  .filter(dirent => dirent.isDirectory())
+  .map(dirent => dirent.name);
+
+console.log('扫描到的系列文件夹:', seriesDirs);
+
+const products = [];
+const series = [];
+
+// 处理每个系列
+seriesDirs.forEach((seriesName, seriesIndex) => {
+  const seriesPath = path.join(publicDir, seriesName);
+  const files = fs.readdirSync(seriesPath)
+    .filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file))
+    .sort();
+
+  console.log(`\n系列 ${seriesName} 中的图片文件:`, files);
+
+  // 按产品分组
+  const productGroups = {};
+
+  files.forEach(file => {
+    // 提取产品名称，去掉编号部分
+    // 例如：产品1 (1).jpg -> 产品1
+    const productNameMatch = file.match(/^(.*?)\s*\(\d+\)\.(jpg|jpeg|png|gif|webp)$/i);
+    if (productNameMatch) {
+      const productName = productNameMatch[1].trim();
+      if (!productGroups[productName]) {
+        productGroups[productName] = [];
       }
-      
-      // 添加产品信息
-      productList.push({
-        id: productId,
-        name: productName,
-        seriesId: seriesId,
-        seriesName: seriesName,
-        price: 199 + Math.floor(Math.random() * 300), // 随机价格
-        description: `${seriesName}系列产品，品质保证`,
-        upperMaterial: '优质材料',
-        innerMaterial: '舒适内里',
-        soleMaterial: '防滑鞋底',
-        minOrder: 1,
-        customizable: true,
-        tags: ['新品', '热销'],
-        images: [imagePath]
-      });
-    });
+      productGroups[productName].push(file);
+    } else {
+      // 没有编号的文件作为单独产品
+      productGroups[file] = [file];
+    }
   });
-  
-  return { seriesList, productList };
-}
 
-// 生成数据文件
-function generateDataFiles() {
-  const { seriesList, productList } = scanPublicFolder();
-  
-  // 生成系列数据
-  const seriesData = JSON.stringify(seriesList, null, 2);
-  fs.writeFileSync(path.join(__dirname, 'src', 'data', 'series.js'), `export default ${seriesData};`);
-  
-  // 生成产品数据
-  const productData = JSON.stringify(productList, null, 2);
-  fs.writeFileSync(path.join(__dirname, 'src', 'data', 'products.js'), `export default ${productData};`);
-  
-  console.log('✅ 扫描完成！');
-  console.log(`📁 发现 ${seriesList.length} 个系列`);
-  console.log(`📷 发现 ${productList.length} 个产品`);
-  console.log('💾 数据已生成到 src/data/ 目录');
-}
+  console.log(`系列 ${seriesName} 的产品分组:`, productGroups);
 
-// 确保data目录存在
-const dataDir = path.join(__dirname, 'src', 'data');
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
-}
+  // 为每个产品创建数据
+  let productIndex = 1;
+  Object.entries(productGroups).forEach(([productName, productFiles]) => {
+    // 按编号排序，确保主图（编号1）在第一个
+    productFiles.sort((a, b) => {
+      const aMatch = a.match(/\((\d+)\)/);
+      const bMatch = b.match(/\((\d+)\)/);
+      const aNum = aMatch ? parseInt(aMatch[1]) : 1;
+      const bNum = bMatch ? parseInt(bMatch[1]) : 1;
+      return aNum - bNum;
+    });
 
-// 执行扫描
-try {
-  generateDataFiles();
-} catch (error) {
-  console.error('❌ 扫描过程中出错:', error.message);
-}
+    // 生成产品ID
+    const productId = `product-series-${seriesIndex + 1}-${productIndex}`;
+
+    // 创建产品数据
+    const product = {
+      id: productId,
+      name: productName,
+      seriesId: `series-${seriesIndex + 1}`,
+      seriesName: seriesName.replace(/^\d+-/, ''), // 去掉系列名称开头的数字和连字符
+      price: Math.floor(Math.random() * 300) + 200, // 随机价格
+      description: `${seriesName.replace(/^\d+-/, '')}系列产品，品质保证`,
+      upperMaterial: '优质材料',
+      innerMaterial: '舒适内里',
+      soleMaterial: '防滑鞋底',
+      minOrder: 1,
+      customizable: true,
+      tags: ['新品', '热销'],
+      images: productFiles.map(file => `${seriesName}/${file}`)
+    };
+
+    products.push(product);
+    productIndex++;
+  });
+
+  // 创建系列数据
+  const seriesData = {
+    id: `series-${seriesIndex + 1}`,
+    name: seriesName.replace(/^\d+-/, ''),
+    order: seriesIndex + 1,
+    productCount: Object.keys(productGroups).length
+  };
+
+  series.push(seriesData);
+});
+
+// 写入产品数据文件
+const productsPath = path.join(__dirname, 'src', 'data', 'products.js');
+fs.writeFileSync(productsPath, `export default ${JSON.stringify(products, null, 2)};
+`);
+
+// 写入系列数据文件
+const seriesPath = path.join(__dirname, 'src', 'data', 'series.js');
+fs.writeFileSync(seriesPath, `export default ${JSON.stringify(series, null, 2)};
+`);
+
+console.log('\n✅ 图片扫描完成！');
+console.log(`生成了 ${products.length} 个产品`);
+console.log(`生成了 ${series.length} 个系列`);
+console.log('产品数据已保存到 src/data/products.js');
+console.log('系列数据已保存到 src/data/series.js');
