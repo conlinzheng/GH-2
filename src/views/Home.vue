@@ -909,17 +909,18 @@ onBeforeUnmount(() => {
 
 // 处理键盘事件
 const handleKeyDown = (event) => {
-  // ESC 键关闭产品详情弹窗
-  if (event.key === 'Escape' && productModalOpen.value) {
-    closeProductDetails()
-  }
-  // ESC 键关闭联系我们弹窗
-  if (event.key === 'Escape' && contactModalOpen.value) {
-    closeContactModal()
-  }
+  // 优先级：先关闭图片查看器，再关闭产品详情弹窗
   // ESC 键关闭图片查看器
   if (event.key === 'Escape' && lightboxOpen.value) {
     closeLightbox()
+  }
+  // ESC 键关闭产品详情弹窗
+  else if (event.key === 'Escape' && productModalOpen.value) {
+    closeProductDetails()
+  }
+  // ESC 键关闭联系我们弹窗
+  else if (event.key === 'Escape' && contactModalOpen.value) {
+    closeContactModal()
   }
 }
 

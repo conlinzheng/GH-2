@@ -94,7 +94,7 @@
   }
 
   .modal-content {
-    @apply relative bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto;
+    @apply relative bg-white rounded-lg shadow-xl max-w-[90vw] w-full max-h-[90vh] overflow-y-auto;
   }
 
   .lightbox {
