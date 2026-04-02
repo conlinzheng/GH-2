@@ -331,7 +331,7 @@
           &times;
         </button>
         
-        <div class="modal-body p-6 md:flex gap-6">
+        <div class="modal-body p-6 md:flex gap-6 h-full">
           <!-- 左侧图片 -->
           <div class="modal-images md:w-1/2 mb-6 md:mb-0">
             <div class="main-image-container mb-4">
@@ -339,7 +339,7 @@
                 id="modal-main-image" 
                 :src="selectedProduct?.images[0] ? encodeURIComponent(selectedProduct.images[0]) : ''" 
                 :alt="selectedProduct?.name || ''" 
-                class="w-full max-h-[70vh] object-contain rounded-md cursor-pointer"
+                class="w-full max-h-[60vh] object-contain rounded-md cursor-pointer"
                 @click="openLightbox(selectedProduct?.images[0])"
               >
               <div class="zoom-hint text-center text-sm text-gray-500 mt-1">点击查看大图</div>
@@ -378,42 +378,42 @@
           </div>
 
           <!-- 右侧信息 -->
-          <div class="modal-info md:w-1/2">
-            <div class="modal-series text-sm text-gray-500 mb-2" id="modal-series">{{ selectedProduct?.seriesId }}</div>
+          <div class="modal-info md:w-1/2 flex flex-col">
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">产品信息</h3>
             <h2 class="text-2xl font-bold mb-2" id="modal-product-name">{{ selectedProduct?.name }}</h2>
-            <p class="modal-description text-gray-600 mb-4" id="modal-description">{{ selectedProduct?.description || '无描述' }}</p>
+            <p class="modal-description text-gray-600 mb-4 leading-relaxed" id="modal-description">{{ selectedProduct?.description || '无描述' }}</p>
             
             <!-- 产品详细信息 -->
-            <div class="product-specs space-y-2 mb-6">
-              <div class="spec-item">
-                <span class="spec-label font-medium">鞋面材质：</span>
-                <span class="spec-value" id="spec-upper">{{ selectedProduct?.upperMaterial || '-' }}</span>
+            <div class="product-specs space-y-3 mb-6">
+              <div class="spec-item flex">
+                <span class="spec-label font-medium w-1/3">鞋面材质：</span>
+                <span class="spec-value flex-1" id="spec-upper">{{ selectedProduct?.upperMaterial || '-' }}</span>
               </div>
-              <div class="spec-item">
-                <span class="spec-label font-medium">内里材质：</span>
-                <span class="spec-value" id="spec-inner">{{ selectedProduct?.innerMaterial || '-' }}</span>
+              <div class="spec-item flex">
+                <span class="spec-label font-medium w-1/3">内里材质：</span>
+                <span class="spec-value flex-1" id="spec-inner">{{ selectedProduct?.innerMaterial || '-' }}</span>
               </div>
-              <div class="spec-item">
-                <span class="spec-label font-medium">鞋底材质：</span>
-                <span class="spec-value" id="spec-sole">{{ selectedProduct?.soleMaterial || '-' }}</span>
+              <div class="spec-item flex">
+                <span class="spec-label font-medium w-1/3">鞋底材质：</span>
+                <span class="spec-value flex-1" id="spec-sole">{{ selectedProduct?.soleMaterial || '-' }}</span>
               </div>
-              <div class="spec-item">
-                <span class="spec-label font-medium">是否支持定制：</span>
-                <span class="spec-value" id="spec-customizable">{{ selectedProduct?.customizable ? (selectedProduct.customizable === 'true' ? '支持' : '不支持') : '-' }}</span>
+              <div class="spec-item flex">
+                <span class="spec-label font-medium w-1/3">是否支持定制：</span>
+                <span class="spec-value flex-1" id="spec-customizable">{{ selectedProduct?.customizable ? (selectedProduct.customizable === 'true' ? '支持' : '不支持') : '-' }}</span>
               </div>
-              <div class="spec-item">
-                <span class="spec-label font-medium">起订量：</span>
-                <span class="spec-value" id="spec-min-order">{{ selectedProduct?.minOrder || '-' }}</span>
+              <div class="spec-item flex">
+                <span class="spec-label font-medium w-1/3">起订量：</span>
+                <span class="spec-value flex-1" id="spec-min-order">{{ selectedProduct?.minOrder || '-' }}</span>
               </div>
-              <div class="spec-item">
-                <span class="spec-label font-medium">价格：</span>
-                <span class="spec-value text-primary font-bold" id="spec-price">{{ selectedProduct?.price || '-' }}</span>
+              <div class="spec-item flex">
+                <span class="spec-label font-medium w-1/3">价格：</span>
+                <span class="spec-value text-primary font-bold flex-1" id="spec-price">{{ selectedProduct?.price || '-' }}</span>
               </div>
             </div>
             
-            <div class="modal-actions">
+            <div class="modal-actions mt-auto">
               <button 
-                class="contact-btn btn btn-primary w-full"
+                class="contact-btn btn btn-primary w-full py-3 text-lg"
                 @click="openContactModal"
               >
                 联系我们
