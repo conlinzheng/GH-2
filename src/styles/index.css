@@ -104,27 +104,27 @@
   }
 
   .modal-content {
-    @apply relative bg-white rounded-lg shadow-xl max-w-[90vw] w-full max-h-[90vh] overflow-y-auto;
+    @apply relative bg-white rounded-lg shadow-xl max-w-[98vw] w-full max-h-[98vh] overflow-y-auto;
   }
 
   @media (min-width: 768px) {
     .modal-content {
-      max-width: 80vw;
-      max-height: 85vh;
+      max-width: 95vw;
+      max-height: 95vh;
     }
   }
 
   @media (min-width: 1024px) {
     .modal-content {
-      max-width: 70vw;
-      max-height: 80vh;
+      max-width: 90vw;
+      max-height: 90vh;
     }
   }
 
   @media (min-width: 1280px) {
     .modal-content {
-      max-width: 60vw;
-      max-height: 75vh;
+      max-width: 85vw;
+      max-height: 85vh;
     }
   }
 

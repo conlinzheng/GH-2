@@ -339,7 +339,7 @@
                 id="modal-main-image" 
                 :src="selectedProduct?.images[0] ? encodeURIComponent(selectedProduct.images[0]) : ''" 
                 :alt="selectedProduct?.name || ''" 
-                class="w-full h-64 object-cover rounded-md cursor-pointer"
+                class="w-full max-h-[70vh] object-contain rounded-md cursor-pointer"
                 @click="openLightbox(selectedProduct?.images[0])"
               >
               <div class="zoom-hint text-center text-sm text-gray-500 mt-1">点击查看大图</div>
