@@ -18,8 +18,18 @@
 
 @layer components {
   .container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
-  }
+  @apply max-w-[90vw] mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.series-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  @apply min-w-[200px] w-full;
+}
 
   .btn {
     @apply px-4 py-2 rounded-md transition-colors;

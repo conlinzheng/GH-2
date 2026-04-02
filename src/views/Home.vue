@@ -132,18 +132,12 @@
               <!-- 产品列表 -->
               <div v-for="(seriesProducts, seriesId) in productsBySeries" :key="seriesId" class="series-section">
                 <h2 class="series-title">{{ seriesNameMap[seriesId] || seriesId }}</h2>
-                <div class="series-products-wrapper relative">
-                  <button 
-                    class="series-nav-btn left" 
-                    @click="scrollSeries(seriesId, -1)"
-                  >
-                    &lt;
-                  </button>
+                <div class="series-products-wrapper">
                   <div class="series-products" :data-series-id="seriesId">
                     <div 
                       v-for="product in seriesProducts" 
                       :key="product.id"
-                      class="product-card min-w-[250px] w-[250px]"
+                      class="product-card"
                     >
                       <div 
                         class="product-image-container cursor-pointer" 
@@ -183,12 +177,6 @@
                       </div>
                     </div>
                   </div>
-                  <button 
-                    class="series-nav-btn right" 
-                    @click="scrollSeries(seriesId, 1)"
-                  >
-                    &gt;
-                  </button>
                 </div>
               </div>
             </div>
