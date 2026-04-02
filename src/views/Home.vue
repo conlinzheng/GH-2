@@ -570,7 +570,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import productsData from '../data/products.js'
 import seriesData from '../data/series.js'
 
@@ -897,7 +897,31 @@ onMounted(() => {
   products.value.forEach(product => {
     currentSlide.value[product.id] = 0
   })
+  
+  // 添加键盘事件监听器，捕获 ESC 键
+  window.addEventListener('keydown', handleKeyDown)
 })
+
+// 清理事件监听器
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeyDown)
+})
+
+// 处理键盘事件
+const handleKeyDown = (event) => {
+  // ESC 键关闭产品详情弹窗
+  if (event.key === 'Escape' && productModalOpen.value) {
+    closeProductDetails()
+  }
+  // ESC 键关闭联系我们弹窗
+  if (event.key === 'Escape' && contactModalOpen.value) {
+    closeContactModal()
+  }
+  // ESC 键关闭图片查看器
+  if (event.key === 'Escape' && lightboxOpen.value) {
+    closeLightbox()
+  }
+}
 
 // 监听产品变化，更新轮播图状态
 watch(products, (newProducts) => {
