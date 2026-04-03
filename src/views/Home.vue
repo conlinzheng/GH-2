@@ -48,12 +48,12 @@
       <div class="container py-8">
         <!-- 轮播图 -->
         <section class="carousel-section mb-8" id="carousel">
-          <div class="carousel-container h-64 md:h-80 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg overflow-hidden relative">
+          <div class="carousel-container h-60 md:h-72 lg:h-80 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg overflow-hidden relative">
             <div class="carousel-track" id="carousel-track">
               <div class="carousel-slide w-full h-full flex items-center justify-center">
-                <div class="carousel-content text-center text-white px-4">
-                  <h2 class="carousel-title text-3xl md:text-4xl font-bold mb-2" id="carousel-title">{{ carouselTitle }}</h2>
-                  <p class="carousel-description text-lg md:text-xl" id="carousel-description">{{ carouselDescription }}</p>
+                <div class="carousel-content text-center text-white px-4 max-w-3xl">
+                  <h2 class="carousel-title text-2xl md:text-3xl lg:text-4xl font-bold mb-3" id="carousel-title">{{ carouselTitle }}</h2>
+                  <p class="carousel-description text-base md:text-lg lg:text-xl" id="carousel-description">{{ carouselDescription }}</p>
                 </div>
               </div>
             </div>
@@ -61,12 +61,12 @@
         </section>
 
         <!-- 搜索框 -->
-        <section class="search-section" id="search-section">
-          <div class="search-container">
+        <section class="search-section mb-10" id="search-section">
+          <div class="search-container max-w-2xl mx-auto">
             <div class="search-input-wrapper relative">
               <input 
                 type="text" 
-                class="search-input" 
+                class="search-input w-full px-5 py-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-lg"
                 id="search-input" 
                 placeholder="搜索产品名称、标签..."
                 v-model="searchQuery"
@@ -74,27 +74,27 @@
                 @keydown.enter="searchProducts"
               >
               <button 
-                class="search-clear-btn" 
+                class="search-clear-btn absolute right-12 top-1/2 transform -translate-y-1/2 p-2 text-gray-400 hover:text-gray-600"
                 id="search-clear" 
                 aria-label="清除搜索" 
                 @click="resetSearch"
                 :style="{ display: showClearButton ? 'flex' : 'none' }"
               >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 4L4 12M4 4l8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M13.5 4.5L4.5 13.5M4.5 4.5l9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button 
+                class="search-btn absolute right-2 top-1/2 transform -translate-y-1/2 p-3 text-primary hover:text-blue-700"
+                id="search-btn" 
+                aria-label="搜索"
+                @click="searchProducts"
+              >
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 18A8 8 0 1 0 10 2a8 8 0 0 0 0 16zM20 20l-4.65-4.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
             </div>
-            <button 
-              class="search-btn" 
-              id="search-btn" 
-              aria-label="搜索"
-              @click="searchProducts"
-            >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16zM19 19l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
           </div>
         </section>
 
@@ -131,19 +131,19 @@
 
               <!-- 产品列表 -->
               <div v-for="(seriesProducts, seriesId) in productsBySeries" :key="seriesId" class="series-section">
-                <h2 class="series-title">{{ seriesNameMap[seriesId] || seriesId }}</h2>
+                <h2 class="series-title text-2xl font-bold mb-6 pb-2 border-b border-gray-200">{{ seriesNameMap[seriesId] || seriesId }}</h2>
                 <div class="series-products-wrapper">
-                  <div class="series-products" :data-series-id="seriesId">
+                  <div class="series-products grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6" :data-series-id="seriesId">
                     <div 
                       v-for="product in seriesProducts" 
                       :key="product.id"
-                      class="product-card"
+                      class="product-card bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden"
                     >
                       <div 
                         class="product-image-container cursor-pointer" 
                         @click="showProductDetails(product)"
                       >
-                        <div v-if="product.images.length > 1" class="product-image-carousel h-48 relative">
+                        <div v-if="product.images.length > 1" class="product-image-carousel h-48 relative bg-gray-50">
                           <div 
                             v-for="(image, index) in product.images" 
                             :key="index"
@@ -156,18 +156,18 @@
                             <button 
                               v-for="(image, index) in product.images" 
                               :key="index"
-                              class="carousel-dot w-2 h-2 rounded-full bg-white/50 hover:bg-white transition-colors" 
-                              :class="{ 'bg-white': currentSlide[product.id] === index }"
+                              class="carousel-dot w-2 h-2 rounded-full bg-black/30 hover:bg-black/50 transition-colors" 
+                              :class="{ 'bg-primary': currentSlide[product.id] === index }"
                               @click="currentSlide[product.id] = index"
                             ></button>
                           </div>
                         </div>
-                        <div v-else class="product-image h-48">
+                        <div v-else class="product-image h-48 bg-gray-50">
                           <img :src="encodeURIComponent(product.images[0])" :alt="product.name" class="w-full h-full object-contain">
                         </div>
                       </div>
                       <div class="product-info p-4">
-                        <h3 class="product-name text-lg font-medium mb-1">{{ product.name }}</h3>
+                        <h3 class="product-name text-lg font-medium mb-1 line-clamp-2">{{ product.name }}</h3>
                         <p class="product-price text-primary font-bold mb-2">{{ product.price || '' }}</p>
                         <div v-if="product.tags && product.tags.length > 0" class="product-tags flex flex-wrap gap-1">
                           <span v-for="tag in product.tags" :key="tag" class="product-tag px-2 py-1 text-xs bg-gray-100 rounded-full">
@@ -516,15 +516,15 @@
     ></div>
 
     <!-- 页脚 -->
-    <footer class="footer">
+    <footer class="footer bg-gray-50 border-t border-gray-200 py-8">
       <div class="container">
-        <div class="footer-content">
+        <div class="footer-content flex flex-col md:flex-row justify-between items-center gap-6">
           <div class="footer-social-links flex gap-4" id="footer-social-links">
             <a 
               v-for="(url, platform) in socialLinks" 
               :key="platform"
               :href="url" 
-              class="social-link" 
+              class="social-link text-gray-600 hover:text-primary transition-colors" 
               :class="platform"
               target="_blank"
               rel="noopener noreferrer"
@@ -542,14 +542,16 @@
               <svg v-else-if="platform === 'weibo'" viewBox="0 0 24 24" class="w-5 h-5"><path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.739 5.443zM9.05 17.219c-.384.616-1.208.884-1.829.602-.612-.279-.793-.991-.406-1.597.379-.595 1.176-.861 1.793-.601.622.263.82.972.442 1.596zm1.27-1.627c-.141.237-.449.353-.689.253-.236-.09-.313-.361-.177-.586.138-.227.436-.346.672-.24.239.09.315.36.194.573zm.176-2.719c-1.893-.493-4.033.45-4.857 2.118-.836 1.704-.026 3.591 1.886 4.21 1.983.64 4.318-.341 5.132-2.179.8-1.809-.232-3.642-2.161-4.149zm7.563-1.224c-.346-.105-.581-.18-.402-.71.388-1.151.436-2.003.003-2.705-.647-1.061-2.225-1.389-3.464-.996-.946.301-1.571.901-1.825 1.753-.277.939-.019 1.711.676 2.427.381.392.851.634 1.381.753.105.024.202.039.293.058-.089.278-.208.55-.333.811l-.001.001c-.336.703-.751 1.509-1.261 1.939-.107.091-.222.133-.336.159l-.003.001c-.232.053-.471.024-.689-.116l.002-.007c.271-.373.485-.815.485-1.373 0-.103-.012-.201-.031-.293l-.002-.012c.135-.016.27-.042.405-.075.449-.109.829-.367 1.119-.762.292-.399.498-.879.598-1.378l.008-.043c.016-.089.024-.178.024-.262 0-.066-.009-.129-.022-.191l.007.003c-.131.16-.27.315-.422.459-.449.425-.989.73-1.586.889l-.023.005c-.099.022-.195.035-.293.043-.198.014-.393.009-.584-.015l.025-.002-.001.001h.002c-.523-.069-1.022-.264-1.456-.572-.433-.309-.762-.718-.971-1.191l-.009-.021c-.204-.462-.289-.946-.262-1.405l-.001-.026c.015-.262.082-.521.194-.761.111-.239.272-.456.474-.637.201-.181.441-.311.706-.383.265-.073.543-.082.813-.034l.002-.003c.252-.044.504-.062.752-.052l.005-.001h.001c.234-.009.464-.008.691.004l-.024-.001h.002c.505.026.971.152 1.375.369.401.216.74.522.995.894l.013.019c.249.364.417.763.497 1.163l.002.012c.026.103.042.208.05.313l.001.013c-.007.009-.015.018-.021.027-.076.111-.162.215-.254.314-.252.268-.555.494-.896.669-.341.176-.714.302-1.099.373l-.013.002c-.098.019-.195.036-.293.047l-.002.001c-.103.012-.206.019-.309.02-.103.002-.205 0-.306-.009l-.002-.001c-.102-.008-.203-.023-.303-.044z"/></svg>
             </a>
           </div>
-          <button 
-            class="footer-contact-btn btn btn-primary py-2 px-6"
-            id="footer-contact-btn"
-            @click="openContactModal"
-          >
-            联系我们
-          </button>
-          <p class="footer-text" id="footer-text">&copy; 2026 GH5. All rights reserved.</p>
+          <div class="flex flex-col items-center md:items-end gap-4">
+            <button 
+              class="footer-contact-btn btn btn-primary py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors"
+              id="footer-contact-btn"
+              @click="openContactModal"
+            >
+              联系我们
+            </button>
+            <p class="footer-text text-gray-600" id="footer-text">&copy; 2026 GH5. All rights reserved.</p>
+          </div>
         </div>
       </div>
     </footer>
