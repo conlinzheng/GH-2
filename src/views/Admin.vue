@@ -260,6 +260,16 @@
                     @input="updateProduct"
                   >
                 </div>
+                <div class="mb-4">
+                  <label class="form-label">标签（用逗号分隔）</label>
+                  <input 
+                    type="text" 
+                    class="form-input w-full"
+                    v-model="selectedProductTags"
+                    @input="updateProductTags"
+                    placeholder="如：新品,热销"
+                  >
+                </div>
                 <div class="mt-6">
                   <button 
                     class="btn btn-primary w-full"
@@ -556,6 +566,7 @@ const formData = ref({
 
 const formTags = ref('')
 const formImages = ref('')
+const selectedProductTags = ref('')
 
 // 新系列数据
 const newSeries = ref({
@@ -752,6 +763,7 @@ const selectSeries = (seriesId) => {
 const selectProduct = (product) => {
   selectedProductId.value = product.id
   selectedProduct.value = product
+  selectedProductTags.value = product.tags ? product.tags.join(', ') : ''
 }
 
 // 获取系列产品数量
@@ -844,6 +856,14 @@ const updateProduct = () => {
       products.value[index] = { ...selectedProduct.value }
       allProducts.value[index] = { ...selectedProduct.value }
     }
+  }
+}
+
+// 更新产品标签
+const updateProductTags = () => {
+  if (selectedProduct.value) {
+    selectedProduct.value.tags = selectedProductTags.value.split(',').map(tag => tag.trim()).filter(tag => tag)
+    updateProduct()
   }
 }
 
