@@ -56,20 +56,23 @@
   }
 
   .series-products {
-    @apply flex gap-4 overflow-x-auto pb-4;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  max-width: 100%;
+}
 
-  .series-products::-webkit-scrollbar {
-    @apply h-2;
-  }
+.series-products::-webkit-scrollbar {
+  @apply h-2;
+}
 
-  .series-products::-webkit-scrollbar-track {
-    @apply bg-gray-100 rounded-full;
-  }
+.series-products::-webkit-scrollbar-track {
+  @apply bg-gray-100 rounded-full;
+}
 
-  .series-products::-webkit-scrollbar-thumb {
-    @apply bg-gray-300 rounded-full hover:bg-gray-400;
-  }
+.series-products::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full hover:bg-gray-400;
+}
 
   .series-nav-btn {
     @apply absolute top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:bg-white transition-colors;
