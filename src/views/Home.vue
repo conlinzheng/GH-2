@@ -364,7 +364,6 @@
                     class="gallery-thumb w-full h-full object-cover rounded-md cursor-pointer hover:opacity-80 transition-opacity"
                     @click="changeMainImage(image)"
                   >
-                  <div class="gallery-thumb-label text-center text-xs text-gray-500 mt-1">图片 {{ index + 1 }}</div>
                 </div>
               </div>
               <button 
