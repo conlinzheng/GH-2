@@ -27,7 +27,7 @@
       <div class="container-fluid h-full p-0">
         <div class="flex h-full">
           <!-- 左栏：系列管理 -->
-          <div class="w-1/4 border-r border-gray-200 bg-white">
+          <div class="w-1/5 border-r border-gray-200 bg-white">
             <div class="p-4 border-b border-gray-200">
               <h3 class="text-lg font-semibold">系列管理</h3>
             </div>
@@ -89,7 +89,7 @@
           </div>
 
           <!-- 中间栏：产品管理 -->
-          <div class="w-1/2 border-r border-gray-200 bg-white">
+          <div class="w-3/5 border-r border-gray-200 bg-white">
             <div class="p-4 border-b border-gray-200 flex justify-between items-center">
               <h3 class="text-lg font-semibold">产品管理</h3>
               <button 
@@ -172,7 +172,7 @@
           </div>
 
           <!-- 右边栏：产品详情编辑 -->
-          <div class="w-1/4 bg-white">
+          <div class="w-1/5 bg-white">
             <div class="p-4 border-b border-gray-200">
               <h3 class="text-lg font-semibold">产品详情</h3>
             </div>
@@ -189,6 +189,16 @@
                     v-model="selectedProduct.name"
                     @input="updateProduct"
                   >
+                </div>
+                <div class="mb-4">
+                  <label class="form-label">描述</label>
+                  <textarea 
+                    class="form-input w-full"
+                    rows="3"
+                    v-model="selectedProduct.description"
+                    @input="updateProduct"
+                    placeholder="产品描述"
+                  ></textarea>
                 </div>
                 <div class="mb-4">
                   <label class="form-label">鞋面材质</label>
@@ -525,18 +535,17 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import productsData from '../data/products.js'
-import seriesData from '../data/series.js'
+import dataStore from '../data/dataStore.js'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
 // 状态管理
 const isLoading = ref(true)
-const products = ref([])
-const allProducts = ref([])
-const series = ref([])
-const seriesNameMap = ref({})
+const products = dataStore.products
+const allProducts = dataStore.products
+const series = dataStore.series
+const seriesNameMap = dataStore.seriesNameMap
 const adminSearchQuery = ref('')
 const adminSelectedSeries = ref('')
 const productModalOpen = ref(false)
@@ -622,18 +631,7 @@ const loadProductsData = async () => {
     // 模拟数据加载
     await new Promise(resolve => setTimeout(resolve, 1000))
     
-    // 使用生成的数据
-    products.value = productsData
-    allProducts.value = productsData
-    
-    // 使用生成的系列数据
-    series.value = seriesData
-    
-    // 系列名称映射
-    seriesNameMap.value = {}
-    series.value.forEach(s => {
-      seriesNameMap.value[s.id] = s.name
-    })
+    // 数据已经通过引用共享，无需重新赋值
     
   } catch (error) {
     console.error('Load products data error:', error)

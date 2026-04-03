@@ -560,15 +560,14 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
-import productsData from '../data/products.js'
-import seriesData from '../data/series.js'
+import dataStore from '../data/dataStore.js'
 
 // 状态管理
 const isLoading = ref(true)
-const products = ref([])
-const allProducts = ref([])
-const series = ref([])
-const seriesNameMap = ref({})
+const products = dataStore.products
+const allProducts = dataStore.products
+const series = dataStore.series
+const seriesNameMap = dataStore.seriesNameMap
 const selectedSeries = ref(null)
 const searchQuery = ref('')
 const showClearButton = ref(false)
@@ -621,10 +620,30 @@ const socialLinks = ref({
 })
 
 // 计算属性
+const filteredProducts = computed(() => {
+  let result = products
+  
+  // 按系列筛选
+  if (selectedSeries.value) {
+    result = result.filter(p => p.seriesId === selectedSeries.value)
+  }
+  
+  // 按搜索词筛选
+  const query = searchQuery.value.toLowerCase().trim()
+  if (query) {
+    result = result.filter(product => {
+      return (
+        product.name.toLowerCase().includes(query) ||
+        (product.tags && product.tags.some(tag => tag.toLowerCase().includes(query)))
+      )
+    })
+  }
+  
+  return result
+})
+
 const productsBySeries = computed(() => {
-  const filtered = selectedSeries.value 
-    ? products.value.filter(p => p.seriesId === selectedSeries.value)
-    : products.value
+  const filtered = filteredProducts.value
   
   return filtered.reduce((acc, product) => {
     if (!acc[product.seriesId]) {
@@ -643,18 +662,7 @@ const loadProductsData = async () => {
     // 模拟数据加载
     await new Promise(resolve => setTimeout(resolve, 1000))
     
-    // 使用生成的数据
-    products.value = productsData
-    allProducts.value = productsData
-    
-    // 使用生成的系列数据
-    series.value = seriesData
-    
-    // 系列名称映射
-    seriesNameMap.value = {}
-    series.value.forEach(s => {
-      seriesNameMap.value[s.id] = s.name
-    })
+    // 数据已经通过引用共享，无需重新赋值
     
   } catch (error) {
     console.error('Load products data error:', error)
@@ -674,22 +682,18 @@ const filterBySeries = (seriesId) => {
 const searchProducts = () => {
   const query = searchQuery.value.toLowerCase().trim()
   if (!query) {
-    products.value = allProducts.value
+    // 重置搜索，直接使用原始数据
     return
   }
   
-  products.value = allProducts.value.filter(product => {
-    return (
-      product.name.toLowerCase().includes(query) ||
-      (product.tags && product.tags.some(tag => tag.toLowerCase().includes(query)))
-    )
-  })
+  // 搜索功能需要重新实现，因为我们现在直接使用原始数据
+  // 这里可以添加搜索逻辑
 }
 
 const resetSearch = () => {
   searchQuery.value = ''
   showClearButton.value = false
-  products.value = allProducts.value
+  // 重置搜索，直接使用原始数据
 }
 
 const updateClearButtonVisibility = () => {
@@ -883,7 +887,7 @@ onMounted(() => {
   loadProductsData()
   
   // 初始化轮播图状态
-  products.value.forEach(product => {
+  products.forEach(product => {
     currentSlide.value[product.id] = 0
   })
   
